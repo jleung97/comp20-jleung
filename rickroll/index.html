@@ -35,12 +35,12 @@
              ["You wouldn't get this from any other guy", [30.5, 34.5]],
              ["I just wanna tell you how I'm feeling", [34.5, 39.5], [153, 158]],
              ["Gotta make you understand", [39.5, 42], [158, 160.5]],
-             ["Never gonna give you up", [42, 44.5], [85, 87.5], [101.5, 104], [160.5, 163], [177.5, 180], [194.5, 197]],
-             ["Never gonna let you down", [44.5, 47], [87.5, 89], [104, 106.5], [163, 165.5], [180, 182.5], [197, 198.5]],
-             ["Never gonna run around and desert you", [47, 51], [89, 93], [106.5, 110.5], [165.5, 169.5], [182.5, 186.5], [198.5, 202.5]],
-             ["Never gonna make you cry", [51, 53], [93, 95], [110.5, 112.5], [169.5, 171.5], [186.5, 188.5], [202.5, 204.5]],
-             ["Never gonna say goodbye", [53, 55], [95, 97], [112.5, 114.5], [171.5, 173.5], [188.5, 190.5], [204.5, 206.5]],
-             ["Never gonna tell a lie and hurt you", [55, 59], [97, 101], [114.5, 118.5], [113.5, 117.5], [173.5, 177.5], [190.5, 194.5], [206.5, 210.5]],
+             ["<div class='chorus'>Never gonna give you up</div>", [42, 44.5], [85, 87.5], [101.5, 104], [160.5, 163], [177.5, 180], [194.5, 197]],
+             ["<div class='chorus'>Never gonna let you down</div>", [44.5, 47], [87.5, 89], [104, 106.5], [163, 165.5], [180, 182.5], [197, 198.5]],
+             ["<div class='chorus'>Never gonna run around and desert you</div>", [47, 51], [89, 93], [106.5, 110.5], [165.5, 169.5], [182.5, 186.5], [198.5, 202.5]],
+             ["<div class='chorus'>Never gonna make you cry</div>", [51, 53], [93, 95], [110.5, 112.5], [169.5, 171.5], [186.5, 188.5], [202.5, 204.5]],
+             ["<div class='chorus'>Never gonna say goodbye</div>", [53, 55], [95, 97], [112.5, 114.5], [171.5, 173.5], [188.5, 190.5], [204.5, 206.5]],
+             ["<div class='chorus'>Never gonna tell a lie and hurt you</div>", [55, 59], [97, 101], [114.5, 118.5], [113.5, 117.5], [173.5, 177.5], [190.5, 194.5], [206.5, 210.5]],
              ["We've known each other for so long", [60, 64], [136, 140]],
              ["Your heart's been aching, but", [64, 66.5], [140, 142.5]],
              ["You're too shy to say it", [66.5, 69.5], [142.5, 145.5]],
@@ -48,11 +48,11 @@
              ["We know the game and we're gonna play it", [72.5, 77], [148.5, 153]],
              ["And if you ask me how I'm feeling", [77, 82]],
              ["Don't tell me you're too blind to see", [82, 85]],
-             ["<div class'bg_vocal'>(Ooh, give you up)</div>", [118.5, 128]],
-             ["Never gonna give, never gonna give<div class'bg_vocal'>(Give you up)</div>", [128, 135]],
+             ["<div class='bg_vocal'>(Ooh, give you up)</div>", [118.5, 128]],
+             ["Never gonna give, never gonna give<div class='bg_vocal'>(Give you up)</div>", [128, 135]],
            ];
 
-    lyrics.innerHTML = get_line(video.currentTime, lines)
+    lyrics.innerHTML = get_line(video.currentTime, lines);
 
 		}, false);
 </script>
