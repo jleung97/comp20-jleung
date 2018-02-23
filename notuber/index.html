@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css" type="text/css">
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      myLat = 0;
+			myLng = 0;
+      var map;
+
+			function getMyLocation() {
+        // check for browser support
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(get_position, geo_error);
+				}
+				else {
+					alert("It appears that geolocation is not supported by your web browser.");
+				}
+			}
+
+      function get_position(position) {
+        myLat = position.coords.latitude;
+        myLng = position.coords.longitude;
+      };
+
+
+      function geo_error(error) {
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+          case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+          case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+          case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+          }
+      }
+      getMyLocation();
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: myLat, lng: myLng},
+          zoom: 15
+        });
+      }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"
+    async defer></script>
+  </body>
+</html>
