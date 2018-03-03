@@ -10,22 +10,22 @@
     <div id="map"></div>
     <script>
       my_lat = 0;
-			my_lng = 0;
+      my_lng = 0;
       username = "AoZKphUjGv";
       var map;
 
-			function getMyLocation() {
+      function getMyLocation() {
         // check for browser support
-				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(function (position) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
             my_lat = position.coords.latitude;
             my_lng = position.coords.longitude;
           }, geo_error);
-				}
-				else {
-					alert("It appears that geolocation is not supported by your web browser.");
-				}
-			}
+        }
+        else {
+          alert("It appears that geolocation is not supported by your web browser.");
+        }
+      }
 
       function geo_error(error) {
         switch(error.code) {
@@ -46,42 +46,78 @@
 
       getMyLocation();
 
+      var request = new XMLHttpRequest();
+      var url = "https://jordan-marsh.herokuapp.com/rides";
+      var params = "username=" + username + "&lat=" + my_lat + "&lng=" + my_lng;
+      request.open("POST", url, true);
+      var json;
+
+      //send proper header information along with request
+      request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+      request.onreadystatechange = function() {
+          if(request.readyState == 4 && request.status == 200) {
+              response = request.responseText;
+              messages = JSON.parse(response)
+              console.log("response is: " + response)
+              console.log("messages is: " + messages)
+
+              others = messages.vehicles;
+              for (i = 0; i < messages.vehicles.length; i++) {
+                username = messages.vehicles[i].username;
+                lat = messages.vehicles[i].lat;
+                lng = messages.vehicles[i].lng;
+                //console.log("a " + messages.vehicles[i].username);
+              }
+
+          }
+      }
+      request.send(params);
+
+
       function initMap() {
         my_info_window = "<div>Username: " + username + "</div>";
         my_coords = {lat: my_lat, lng: my_lng};
         map = new google.maps.Map(document.getElementById('map'), {
           center: my_coords,
-          zoom: 15
+          zoom: 8
         });
         var infowindow = new google.maps.InfoWindow({
           content: my_info_window
         });
+        fake = [[2, 5], [35, 74], [-54, 23], [41, -74]];
         var marker = new google.maps.Marker({
           position: my_coords,
           map: map,
           icon: 'flygon.png'
         });
+
+        console.log("others " + others);
+        for (i = 0; i < others.length; i++) {
+          var o_marker = new google.maps.Marker({
+            position: {lat: others[i].lat, lng: others[i].lng},
+            map: map,
+          });
+        }
         marker.addListener('click', function() {
           infowindow.open(map, marker);
         });
       }
 
-      var http = new XMLHttpRequest();
-      var url = "https://jordan-marsh.herokuapp.com/rides";
-      var params = "username=" + username + "&lat=" + my_lat + "&lng=" + my_lng;
-      http.open("POST", url, true);
-      var json;
-
-      //Send the proper header information along with the request
-      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-      http.onreadystatechange = function() {//Call a function when the state changes.
-          if(http.readyState == 4 && http.status == 200) {
-              json = http.responseText;
-              alert(json)
-          }
-      }
-      http.send(params);
+      //
+      // for (key in dummy_data) {
+      //   if (dummy_data.hasOwnProperty(key)) {
+      //     list = dummy_data[key];
+      //     for (i = 0; i < list.length; i++) {
+      //       var marker = new google.maps.Marker({
+      //         position: {lat: list[i][lat], lng: list[i][lng]},
+      //         map: map,
+      //         icon: 'flygon.png'
+      //       })
+      //     console.log(key + " -> " + dummy_data[key]);
+      //     }
+      //   }
+      // }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
   </body>

@@ -2,10 +2,9 @@
 
 TODO:
 * Handle geo_error
-* Send POST request with user's info
 * Parse result
-* Display other passengers / vehicles
-* Ensure it works both ways
+* Handle async communication
+* Ensure displaying passengers/vehicles works both ways
 * Infowindows for everyone
 * Calculate distances
 
