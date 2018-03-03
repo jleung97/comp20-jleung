@@ -85,14 +85,12 @@
         var infowindow = new google.maps.InfoWindow({
           content: my_info_window
         });
-        fake = [[2, 5], [35, 74], [-54, 23], [41, -74]];
         var marker = new google.maps.Marker({
           position: my_coords,
           map: map,
           icon: 'flygon.png'
         });
 
-        console.log("others " + others);
         for (i = 0; i < others.length; i++) {
           var o_marker = new google.maps.Marker({
             position: {lat: others[i].lat, lng: others[i].lng},
@@ -104,20 +102,6 @@
         });
       }
 
-      //
-      // for (key in dummy_data) {
-      //   if (dummy_data.hasOwnProperty(key)) {
-      //     list = dummy_data[key];
-      //     for (i = 0; i < list.length; i++) {
-      //       var marker = new google.maps.Marker({
-      //         position: {lat: list[i][lat], lng: list[i][lng]},
-      //         map: map,
-      //         icon: 'flygon.png'
-      //       })
-      //     console.log(key + " -> " + dummy_data[key]);
-      //     }
-      //   }
-      // }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
   </body>
