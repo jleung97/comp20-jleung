@@ -5,7 +5,7 @@ TODO:
 * Parse result
 * Handle async communication
 * Ensure displaying passengers/vehicles works both ways
-* Infowindows for everyone
+* Infowindows for everyone to display username and distance
 * Calculate distances
 
 

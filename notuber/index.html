@@ -59,15 +59,13 @@
           if(request.readyState == 4 && request.status == 200) {
               response = request.responseText;
               messages = JSON.parse(response)
-              console.log("response is: " + response)
-              console.log("messages is: " + messages)
 
-              others = messages.vehicles;
-              for (i = 0; i < messages.vehicles.length; i++) {
-                username = messages.vehicles[i].username;
-                lat = messages.vehicles[i].lat;
-                lng = messages.vehicles[i].lng;
-                //console.log("a " + messages.vehicles[i].username);
+              if ('vehicles' in messages) {
+                others = messages.vehicles;
+                is_vehicle = true;
+              } else {
+                others = messages.passengers;
+                is_vehicle = false;
               }
 
           }
@@ -90,16 +88,26 @@
           map: map,
           icon: 'flygon.png'
         });
-
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+        if (is_vehicle) {
+          o_icon = 'car.png'
+        }
         for (i = 0; i < others.length; i++) {
           var o_marker = new google.maps.Marker({
             position: {lat: others[i].lat, lng: others[i].lng},
             map: map,
+            content: "<div>Username: " + others[i].username + "</div>",
+            icon: o_icon
+          });
+          var o_infowindow = new google.maps.InfoWindow();
+
+          google.maps.event.addListener(o_marker, 'click', function () {
+            o_infowindow.setContent(this.content);
+            o_infowindow.open(map, this);
           });
         }
-        marker.addListener('click', function() {
-          infowindow.open(map, marker);
-        });
       }
 
     </script>
