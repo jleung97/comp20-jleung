@@ -2,10 +2,6 @@
 
 TODO:
 * Handle geo_error
-* Parse result
-* Handle async communication
-* Ensure displaying passengers/vehicles works both ways
-* Infowindows for everyone to display username and distance
 * Calculate distances
 
 

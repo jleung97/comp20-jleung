@@ -12,20 +12,8 @@
       my_lat = 0;
       my_lng = 0;
       username = "AoZKphUjGv";
-      var map;
-
-      function getMyLocation() {
-        // check for browser support
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function (position) {
-            my_lat = position.coords.latitude;
-            my_lng = position.coords.longitude;
-          }, geo_error);
-        }
-        else {
-          alert("It appears that geolocation is not supported by your web browser.");
-        }
-      }
+      request = new XMLHttpRequest();
+      url = "https://jordan-marsh.herokuapp.com/rides";
 
       function geo_error(error) {
         switch(error.code) {
@@ -44,41 +32,38 @@
           }
       }
 
-      getMyLocation();
+      function send_request(make_markers) {
+        var params = "username=" + username + "&lat=" + my_lat + "&lng=" + my_lng;
+        request.open("POST", url, true);
+        var json;
 
-      var request = new XMLHttpRequest();
-      var url = "https://jordan-marsh.herokuapp.com/rides";
-      var params = "username=" + username + "&lat=" + my_lat + "&lng=" + my_lng;
-      request.open("POST", url, true);
-      var json;
+        //send proper header information along with request
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-      //send proper header information along with request
-      request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.onreadystatechange = function() {
+            if(request.readyState == 4 && request.status == 200) {
+                response = request.responseText;
+                messages = JSON.parse(response)
 
-      request.onreadystatechange = function() {
-          if(request.readyState == 4 && request.status == 200) {
-              response = request.responseText;
-              messages = JSON.parse(response)
-
-              if ('vehicles' in messages) {
-                others = messages.vehicles;
-                is_vehicle = true;
-              } else {
-                others = messages.passengers;
-                is_vehicle = false;
-              }
-
-          }
+                if ('vehicles' in messages) {
+                  others = messages.vehicles;
+                  is_vehicle = true;
+                } else {
+                  others = messages.passengers;
+                  is_vehicle = false;
+                }
+                make_markers();
+            }
+        }
+        request.send(params);
       }
-      request.send(params);
 
-
-      function initMap() {
+      function make_markers() {
         my_info_window = "<div>Username: " + username + "</div>";
         my_coords = {lat: my_lat, lng: my_lng};
         map = new google.maps.Map(document.getElementById('map'), {
           center: my_coords,
-          zoom: 8
+          zoom: 16
         });
         var infowindow = new google.maps.InfoWindow({
           content: my_info_window
@@ -93,6 +78,8 @@
         });
         if (is_vehicle) {
           o_icon = 'car.png'
+        } else {
+          o_icon = 'altaria.png'
         }
         for (i = 0; i < others.length; i++) {
           var o_marker = new google.maps.Marker({
@@ -108,6 +95,21 @@
             o_infowindow.open(map, this);
           });
         }
+      }
+
+      function initMap() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            my_lat = position.coords.latitude;
+            my_lng = position.coords.longitude;
+            send_request(make_markers);
+
+          }, geo_error);
+        }
+        else {
+          alert("It appears that geolocation is not supported by your web browser.");
+        }
+
       }
 
     </script>
