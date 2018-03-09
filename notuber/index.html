@@ -58,13 +58,58 @@
         request.send(params);
       }
 
+      Number.prototype.toRad = function() {
+         return this * Math.PI / 180;
+      }
+
+      function calc_distance() {
+        var R = 6371; // km
+        var x1 = my_coords.lat - o_coords.lat;
+        var dLat = x1.toRad();
+        var x2 = my_coords.lng - o_coords.lng;
+        var dLon = x2.toRad();
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                        Math.cos(o_coords.lat.toRad()) * Math.cos(my_coords.lat.toRad()) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        // convert to miles
+        return R * c * 0.621371192;
+
+      }
+
       function make_markers() {
-        my_info_window = "<div>Username: " + username + "</div>";
-        my_coords = {lat: my_lat, lng: my_lng};
+        my_coords = {lat: Number(my_lat), lng: Number(my_lng)};
         map = new google.maps.Map(document.getElementById('map'), {
           center: my_coords,
           zoom: 16
         });
+        if (is_vehicle) {
+          o_icon = 'car.png'
+        } else {
+          o_icon = 'altaria.png'
+        }
+        curr_closest = Number.MAX_SAFE_INTEGER;
+        for (i = 0; i < others.length; i++) {
+          o_coords = {lat: Number(others[i].lat), lng: Number(others[i].lng)};
+          distance = calc_distance();
+          if (distance < curr_closest) {
+            curr_closest = distance;
+          }
+          var o_marker = new google.maps.Marker({
+            position: o_coords,
+            map: map,
+            content: '<div class="window">Username: ' + others[i].username + '</div><div>Distance Away: ' + distance + '</div>',
+            icon: o_icon
+          });
+          var o_infowindow = new google.maps.InfoWindow();
+
+          google.maps.event.addListener(o_marker, 'click', function () {
+            o_infowindow.setContent(this.content);
+            o_infowindow.open(map, this);
+          });
+        }
+        my_info_window = '<div>Username: ' + username + '</div><div>Nearest: ' + curr_closest + '</div>';
         var infowindow = new google.maps.InfoWindow({
           content: my_info_window
         });
@@ -76,25 +121,6 @@
         marker.addListener('click', function() {
           infowindow.open(map, marker);
         });
-        if (is_vehicle) {
-          o_icon = 'car.png'
-        } else {
-          o_icon = 'altaria.png'
-        }
-        for (i = 0; i < others.length; i++) {
-          var o_marker = new google.maps.Marker({
-            position: {lat: others[i].lat, lng: others[i].lng},
-            map: map,
-            content: "<div>Username: " + others[i].username + "</div>",
-            icon: o_icon
-          });
-          var o_infowindow = new google.maps.InfoWindow();
-
-          google.maps.event.addListener(o_marker, 'click', function () {
-            o_infowindow.setContent(this.content);
-            o_infowindow.open(map, this);
-          });
-        }
       }
 
       function initMap() {
@@ -109,10 +135,8 @@
         else {
           alert("It appears that geolocation is not supported by your web browser.");
         }
-
       }
-
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=geometry&callback=initMap"></script>
   </body>
 </html>
