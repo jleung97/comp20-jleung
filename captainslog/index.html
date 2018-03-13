@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-        function reload() {
-            elem = document.getElementById("log");
+        function update() {
+            log = document.getElementById("log");
             output = "";
             for (var i = 0; i < localStorage.length; i++) {
                 timestamp = localStorage.key(i).toString();
                 message = localStorage.getItem(localStorage.key(i));
                 output = "<div class='entry'><span class='tstamp'>" + timestamp + " - </span>" + message + "</div>" + output;
             }
-            elem.innerHTML = output;
+            log.innerHTML = output;
         }
 
         function store() {
@@ -25,7 +25,7 @@
             date = new Date(time);
             localStorage[date] = txt;
             document.getElementById("msg").value = "";
-            reload();
+            update();
         }
 
         $(document).ready(function() {
