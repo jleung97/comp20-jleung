@@ -12,7 +12,9 @@
             elem = document.getElementById("log");
             output = "";
             for (var i = 0; i < localStorage.length; i++) {
-                output = "<p>" + localStorage.key(i).toString() + " - " + localStorage.getItem(localStorage.key(i)) + "</p>\n" + output;
+                timestamp = localStorage.key(i).toString();
+                message = localStorage.getItem(localStorage.key(i));
+                output = "<div class='entry'><span class='tstamp'>" + timestamp + " - </span>" + message + "</div>" + output;
             }
             elem.innerHTML = output;
         }
