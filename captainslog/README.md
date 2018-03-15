@@ -5,4 +5,5 @@
     * [Ming's local_storage example](https://github.com/tuftsdev/WebProgramming/blob/gh-pages/examples/cookies_localstorage/localstorage_example.html)
     * [Documentation on the Date object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)
     * [Detecting an 'enter' keypress](https://stackoverflow.com/questions/979662/how-to-detect-pressing-enter-on-keyboard-using-jquery)
+    * [Sorting the keys in a dictionary](https://stackoverflow.com/questions/10946880/sort-a-dictionary-or-whatever-key-value-data-structure-in-js-on-word-number-ke/10946984)
 3. I spent approximately 1.5 hours on this.

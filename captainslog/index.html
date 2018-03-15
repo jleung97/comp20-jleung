@@ -11,9 +11,18 @@
         function update() {
             log = document.getElementById("log");
             output = "";
+
+            var sorted = [];
             for (var i = 0; i < localStorage.length; i++) {
-                timestamp = localStorage.key(i).toString();
-                message = localStorage.getItem(localStorage.key(i));
+                var d = new Date(localStorage.key(i));
+                sorted[i] = d.getTime();
+            }
+            sorted.sort();
+
+            for (var i = 0; i < sorted.length; i++) {
+                var d = new Date(sorted[i]);
+                var timestamp = d.toString();
+                var message = localStorage.getItem(d);
                 output = "<div class='entry'><span class='tstamp'>" + timestamp + " - </span>" + message + "</div>" + output;
             }
             log.innerHTML = output;
