@@ -1,0 +1,57 @@
+<!doctype HTML>
+<html>
+<head>
+    <title>Security Assessment</title>
+    <link rel='stylesheet' type='text/css' href='index.css'>
+</head>
+<body>
+    <h1>Introduction</h1>
+    <p><a href='https://rocky-springs-18295.herokuapp.com '>https://rocky-springs-18295.herokuapp.com</a> is a server-side web application built with Heroku, Node.js, Express, and MongoDB. It accepts POST data detailing vehicle or passenger information. Vehicle data can be retrieved at the vehicles.json path, while passenger data can be easily seen at the index.</p>
+    <p>The purpose of this analysis is to detail what security flaws exist in the application and to provide advice to the developer as to how to fix these issues.</p>
+
+    <h1>Methodology</h1>
+    <p>To start with, I explored through the different pages of the application and observed what it did and what the expected behavior was. From there, I did 'black box' testing, where I tried attacks based on common security vulnerabilities without any knowledge of the underlying code. After that, I looked through the code to perform 'white box' testing, where I was able to find vulnerabilities in bad programming practice.</p>
+
+    <h1>Abstract of Findings</h1>
+    <p>This ride-sharing application had several security and privacy issues. This report will detail three of them. Private user information, such as their exact location and the time that they were at said location, is displayed on the front page of the application for anyone to see. This provides potential attackers with sensitive information such as where a passenger may live, and when they are at home. The application is also vulnerable to cross-site scripting attacks, which would allow an attacker to steal sensitive information and control the content that the user sees. The last vulnerability noted here is the lack of effort taken to hide information such as the usernames of the drivers. This information was written directly into the source code and not encrypted in any way. These vulnerabilities leave the application to be easily attacked and broken, thus compromising its confidentiality, integrity, and availability.</p>
+
+
+    <h1>Issues Found</h1>
+    <h3>Private User Information Displayed</h3>
+    <ul>
+        <li><span class='bullet'>Location:</span> index page (https://rocky-springs-18295.herokuapp.com/)</li>
+        <li><span class='bullet'>Severity:</span> HIGH. User's exact location, latitude and longitude, is displayed freely for anyone with the link to the heroku application. Along with this, the application gives the timestamp of when that information was sent. This allows anyone to know where a specified user was at a given time, a privacy violation that could put many users in danger.</li>
+        <li><span class='bullet'>Description:</span>mI found this by looking at the index page.</li>
+        <li><span class='bullet'>Proof:</span><br><img src='pics/user_privacy.PNG' alt='user_privacy'></li>
+        <li><span class='bullet'>Resolution:</span> Only drivers should be able to see passenger requests, rather than everyone. This could be done by requiring a login of some sort. Additionally, once a ride has expired, it should be removed from the page.</li>
+    </ul>
+
+    <h3>Cross-Site Scripting (XSS)</h3>
+    <ul>
+        <li><span class='bullet'>Location:</span> The /rides path</li>
+        <li><span class='bullet'>Severity:</span> HIGH. XSS can be extremely dangerous, as attackers can send scripts to unsuspecting users to be executed. Such scripts could access sensitive information or redirect a user to melicious sites.</li>
+        <li><span class='bullet'>Description:</span> I found this vulnerability by sending a script along with the rest of the required information. The following screenshot shows what was typed:<br>
+            <img src='pics/xss_terminal.PNG' alt='xss_terminal'></li>
+        <li><span class='bullet'>Proof:</span><br>
+            <img src='pics/xss_page.PNG' alt='xss_page'></li>
+        <li><span class='bullet'>Resolution:</span> User input should be sanitized. For example, input could be run with ".replace(/[^\w\s]/gi, ''" in order to get rid of special characters.</li>
+    </ul>
+    <h3>Hardcoded Information in File</h3>
+    <ul>
+        <li><span class='bullet'>Location:</span> index.js</li>
+        <li><span class='bullet'>Severity:</span> MEDIUM. Hardcoding the vehicles array in plaintext is bad programming practice. This sensitive information is not hidden in any way, and easily allows somoene to know which usernames belong to the drivers, and by extension, which usernames belong to the passengers. This is a privacy violation.</li>
+        <li><span class='bullet'>Description:</span> I discovered this while looking through the index.js file and came across these lines of code.<br>
+        <img src='pics/vehicles.PNG' alt='vehicles'></li>
+        <li><span class='bullet'>Proof:</span> See above.</li>
+        <li><span class='bullet'>Resolution:</span> Save the vehicles in a separate, hidden file and encrypt the data.</li>
+    </ul>
+
+    <h1>Conclusion</h1>
+    <p>This application has many security and privacy issues, some of which are detailed here. With further penetration testing, more could be unveiled. In the future, the developer should program with security in mind. User input should never be trusted, and should always be sanitized server-side before being used. This could be done by stripping special characters or comparing to a whitelist. Additionally, sensitive data should be encrypted with strong hashing algorithms and hidden away. Server software should be kept up-to-date to avoid falling into the trap of vulnerable outdated code.</p>
+    <h1>References</h1>
+    <ul>
+        <li><a href='https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)'>Cross-site Scripting</a></li>
+        <li><a href='https://www.creativebloq.com/web-design/website-security-tips-protect-your-site-7122853'>Security tips</a></li>
+    </ul>
+</body>
+</html>
